@@ -6,10 +6,7 @@ from leaders.language_leader import language_leader
 from storage.database import (
     init_db,
     save_message,
-    load_messages,
-    get_sessions
 )
-
 
 st.set_page_config(
     page_title="Finance AI Agent",
@@ -47,18 +44,14 @@ div[data-testid="stChatMessage"] {
 </style>
 """)
 
-
-if "session_id" not in st.session_state:
-    st.session_state.session_id = str(uuid.uuid4())
+# NEW SESSION EVERY REFRESH
+st.session_state.session_id = str(uuid.uuid4())
 
 if "messages" not in st.session_state:
-    st.session_state.messages = load_messages(
-        st.session_state.session_id
-    )
-
+    st.session_state.messages = []
 
 st.sidebar.markdown(
-    '<div class="sidebar-label"><i class="fa-solid fa-clock-rotate-left"></i>&nbsp;Chat History</div>',
+    '<div class="sidebar-label"><i class="fa-solid fa-clock-rotate-left"></i>&nbsp;New Session</div>',
     unsafe_allow_html=True,
 )
 
@@ -67,34 +60,16 @@ if st.sidebar.button("New Chat", use_container_width=True, icon=":material/add:"
     st.session_state.messages = []
     st.rerun()
 
-st.sidebar.divider()
-
-sessions = get_sessions()
-
-if not sessions:
-    st.sidebar.caption("No previous chats yet.")
-
-for sid in sessions:
-    is_active = sid == st.session_state.session_id
-    icon = ":material/radio_button_checked:" if is_active else ":material/chat_bubble:"
-    if st.sidebar.button(f"Chat {sid[:8]}", key=f"session_{sid}", use_container_width=True, icon=icon):
-        st.session_state.session_id = sid
-        st.session_state.messages = load_messages(sid)
-        st.rerun()
-
-
 st.markdown(
     '<h1 class="app-title"><i class="fa-solid fa-chart-line"></i>&nbsp;Finance AI Agent</h1>',
     unsafe_allow_html=True,
 )
 st.caption("Ask anything about stocks, markets, or companies.")
 
-
 for msg in st.session_state.messages:
     avatar = ":material/person:" if msg["role"] == "user" else ":material/smart_toy:"
     with st.chat_message(msg["role"], avatar=avatar):
         st.write(msg["content"])
-
 
 user_input = st.chat_input(
     "Ask anything about stocks, markets, or companies..."
@@ -102,12 +77,12 @@ user_input = st.chat_input(
 
 if user_input:
 
-    # Save user message
     st.session_state.messages.append({
         "role": "user",
         "content": user_input
     })
 
+    # Still saves to DB (optional)
     save_message(
         st.session_state.session_id,
         "user",
@@ -117,20 +92,16 @@ if user_input:
     with st.chat_message("user", avatar=":material/person:"):
         st.write(user_input)
 
-    # Build history
     history_text = ""
 
     for msg in st.session_state.messages:
         history_text += f"{msg['role']}: {msg['content']}\n"
 
-    final_input = history_text
-
-
     with st.chat_message("assistant", avatar=":material/smart_toy:"):
         with st.spinner("Analyzing markets..."):
 
             response = language_leader.run(
-                input=final_input,
+                input=history_text,
                 session_id=st.session_state.session_id
             )
 
