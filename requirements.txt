@@ -1,8 +1,9 @@
-﻿agno==2.6.22
+agno==2.6.22
 streamlit==1.46.1
 groq==0.31.0
 python-dotenv==1.1.1
 yfinance==0.2.65
+SQLAlchemy==2.0.41
+streamlit-cookies-manager==0.2.0
 tavily-python==0.7.10
 ddgs==9.5.5
-SQLAlchemy>=2.0
