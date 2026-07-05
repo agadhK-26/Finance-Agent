@@ -1,0 +1,6 @@
+.env
+memory.db
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
