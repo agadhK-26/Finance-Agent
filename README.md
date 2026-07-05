@@ -10,7 +10,6 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Agno](https://img.shields.io/badge/Agno-v2.6.22-6C5CE7?style=for-the-badge)](https://github.com/agno-agi/agno)
 [![Groq](https://img.shields.io/badge/LLM-Groq-F55036?style=for-the-badge)](https://groq.com/)
-[![License](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge)](#-license)
 
 **[🔗 Try it live](https://finance-agent-mggjcmqhpp4emmermxc4az.streamlit.app/)**
 
@@ -32,7 +31,7 @@ Ask it to compare two stocks, explain a company's valuation, pull today's market
 |---|---|
 | 🧠 **Hierarchical Multi-Agent System** | 2 leader agents coordinate 3 specialist agents |
 | 📈 **Real-Time Market Data** | Live prices, fundamentals, and financial statements via Yahoo Finance |
-| 📰 **Live News Search** | Up-to-the-minute financial news via Tavily Search |
+| 📰 **Live News Search** | Up-to-the-minute financial news via DuckDuckGo & Tavily Search |
 | 💡 **AI-Powered Insights** | Bull/bear analysis, risk assessment, and financial reasoning |
 | 🌍 **Multilingual Support** | Detects and responds in the user's language automatically |
 | 💾 **Persistent Chat History** | SQLite-backed conversations, isolated per user via cookies |
@@ -56,7 +55,7 @@ The app runs on a **5-agent hierarchical pipeline**:
         ┌───────────────────┼───────────────────┐
         │                   │                   │
    📊 Finance Agent     📰 News Agent      💡 Insight Agent
-  (Yahoo Finance data)  (Tavily search)   (analysis & reasoning)
+  (Yahoo Finance data)  (DuckDuckGo + Tavily)   (analysis & reasoning)
         │                   │                   │
         └───────────────────┼───────────────────┘
                             │
@@ -77,7 +76,7 @@ The app runs on a **5-agent hierarchical pipeline**:
 | **Language Leader** | Entry point — detects user language, keeps conversation consistent, hands off to Finance Leader |
 | **Finance Leader** | Orchestrator — analyzes intent, delegates to specialists, merges & deduplicates results |
 | **Finance Agent** | Pulls stock prices, market cap, P/E, EPS, dividend yield, financials, analyst ratings |
-| **News Agent** | Retrieves company news, earnings, market updates, M&A, regulatory events |
+| **News Agent** | Retrieves company news, earnings, market updates, M&A, regulatory events via DuckDuckGo & Tavily |
 | **Insight Agent** | Performs comparisons, bull/bear cases, risk assessment, and financial reasoning |
 
 </details>
@@ -93,7 +92,7 @@ The app runs on a **5-agent hierarchical pipeline**:
 | **Frontend** | Streamlit |
 | **LLM Provider** | Groq |
 | **Financial Data** | Yahoo Finance (YFinance Tools) |
-| **Web Search** | Tavily Search API |
+| **Web Search** | DuckDuckGo Search + Tavily Search API |
 | **Database** | SQLite + SQLAlchemy |
 | **Session Handling** | Streamlit Session State & Cookies |
 | **Config** | python-dotenv |
@@ -117,7 +116,7 @@ Try prompts like:
 
 ### Prerequisites
 - Python 3.10+
-- API keys for **Groq** and **Tavily**
+- API keys for **Groq** and **Tavily** (DuckDuckGo Search needs no API key)
 
 ### Installation
 
@@ -193,12 +192,6 @@ Contributions are welcome! Feel free to open an issue or submit a PR.
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
 
 ---
 
